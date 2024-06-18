@@ -5,7 +5,6 @@ package com.dnsouzadev.picpay_desafio.authorization;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
-import com.dnsouzadev.picpay_desafio.exception.UnauthorizedTransactionException;
 import com.dnsouzadev.picpay_desafio.transaction.Transaction;
 
 @Service

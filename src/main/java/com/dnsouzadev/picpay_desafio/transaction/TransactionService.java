@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dnsouzadev.picpay_desafio.authorization.AuthorizerService;
-import com.dnsouzadev.picpay_desafio.exception.InvalidTransactionException;
+import com.dnsouzadev.picpay_desafio.notification.NotificationService;
 import com.dnsouzadev.picpay_desafio.wallet.Wallet;
 import com.dnsouzadev.picpay_desafio.wallet.WalletRepository;
 import com.dnsouzadev.picpay_desafio.wallet.WalletType;
@@ -14,11 +14,13 @@ public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final WalletRepository walletRepository;
     private final AuthorizerService authorizerService;
+    private final NotificationService notificationService;
 
-    public TransactionService(TransactionRepository transactionRepository, WalletRepository walletRepository, AuthorizerService authorizerService) {
+    public TransactionService(TransactionRepository transactionRepository, WalletRepository walletRepository, AuthorizerService authorizerService, NotificationService notificationService) {
         this.transactionRepository = transactionRepository;
         this.walletRepository = walletRepository;
         this.authorizerService = authorizerService;
+        this.notificationService = notificationService;
     }
 
     @Transactional
@@ -31,6 +33,8 @@ public class TransactionService {
         walletRepository.save(wallet.debit(transaction.value()));
 
         authorizerService.authorize(transaction);
+
+        notificationService.notify(transaction);
 
         return newTransaction;
     }
