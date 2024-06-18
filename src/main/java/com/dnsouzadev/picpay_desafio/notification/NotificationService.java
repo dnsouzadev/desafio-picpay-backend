@@ -6,9 +6,14 @@ import com.dnsouzadev.picpay_desafio.transaction.Transaction;
 
 @Service
 public class NotificationService {
+    private final NotificationProducer notificationProducer;
+
+    public NotificationService(NotificationProducer notificationProducer) {
+        this.notificationProducer = notificationProducer;
+    }
 
     public void notify(Transaction transaction) {
-        // Send notification
+        notificationProducer.sendNotification(transaction);
 
     }
 }
